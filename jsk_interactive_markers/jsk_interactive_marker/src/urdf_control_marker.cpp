@@ -85,11 +85,11 @@ UrdfControlMarker::UrdfControlMarker() : nh_(), pnh_("~"){
   }
   pub_pose_ = pnh_.advertise<geometry_msgs::PoseStamped>("pose", 1);
   pub_selected_pose_ = pnh_.advertise<geometry_msgs::PoseStamped>("selected_pose", 1);
-  sub_set_pose_ = pnh_.subscribe<geometry_msgs::PoseStamped> ("set_pose", 1, boost::bind( &UrdfControlMarker::set_pose_cb, this, _1));
-  sub_show_marker_ = pnh_.subscribe<std_msgs::Bool> ("show_marker", 1, boost::bind( &UrdfControlMarker::show_marker_cb, this, _1));
+  sub_set_pose_ = pnh_.subscribe<geometry_msgs::PoseStamped> ("set_pose", 1, boost::bind( &UrdfControlMarker::set_pose_cb, this, boost::placeholders::_1));
+  sub_show_marker_ = pnh_.subscribe<std_msgs::Bool> ("show_marker", 1, boost::bind( &UrdfControlMarker::show_marker_cb, this, boost::placeholders::_1));
 
   marker_menu_.insert( "Publish Pose",
-		       boost::bind( &UrdfControlMarker::publish_pose_cb, this, _1) );
+		       boost::bind( &UrdfControlMarker::publish_pose_cb, this, boost::placeholders::_1) );
 
   makeControlMarker( false );
 
@@ -262,7 +262,7 @@ void UrdfControlMarker::makeControlMarker( bool fixed )
   int_marker.controls.push_back(control);
 
   server_->insert(int_marker);
-  server_->setCallback(int_marker.name, boost::bind( &UrdfControlMarker::processFeedback, this, _1));
+  server_->setCallback(int_marker.name, boost::bind( &UrdfControlMarker::processFeedback, this, boost::placeholders::_1));
   marker_menu_.apply(*server_, int_marker.name);
   server_->applyChanges();
   if (use_dynamic_tf_) {

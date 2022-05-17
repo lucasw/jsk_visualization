@@ -58,7 +58,7 @@ namespace jsk_interactive_marker
     srv_ = std::make_shared <dynamic_reconfigure::Server<Config> > (pnh);
     dynamic_reconfigure::Server<Config>::CallbackType f =
       boost::bind (
-        &CameraInfoPublisher::configCallback, this, _1, _2);
+        &CameraInfoPublisher::configCallback, this, boost::placeholders::_1, boost::placeholders::_2);
     srv_->setCallback (f);
 
     // read parameters
@@ -102,7 +102,7 @@ namespace jsk_interactive_marker
         timer_ = nh.createTimer(
           ros::Duration( 1 / static_rate ),
           boost::bind(&CameraInfoPublisher::staticRateCallback,
-                      this, _1));
+                      this, boost::placeholders::_1));
       }
     }
   }
@@ -119,7 +119,7 @@ namespace jsk_interactive_marker
     int_marker.name = "camera info";
     im_helpers::add6DofControl(int_marker, false);
     server_->insert(int_marker,
-                    boost::bind(&CameraInfoPublisher::processFeedback, this, _1));
+                    boost::bind(&CameraInfoPublisher::processFeedback, this, boost::placeholders::_1));
     server_->applyChanges();
   }
 

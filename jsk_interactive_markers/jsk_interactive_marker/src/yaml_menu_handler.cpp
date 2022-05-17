@@ -43,7 +43,7 @@ bool YamlMenuHandler::initMenu(std::string file_name) {
 #endif
     ROS_INFO("Regist %s, %s", text.c_str(), topic_name.c_str());
     _publisher_map[topic_name] = _node_ptr->advertise<std_msgs::String>(topic_name, 1);
-    _menu_handler.insert(text, boost::bind(&YamlMenuHandler::pubTopic, this, _1, topic_name));
+    _menu_handler.insert(text, boost::bind(&YamlMenuHandler::pubTopic, this, boost::placeholders::_1, topic_name));
   }
 }
 

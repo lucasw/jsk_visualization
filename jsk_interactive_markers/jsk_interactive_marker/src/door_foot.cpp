@@ -302,11 +302,11 @@ void DoorFoot::pullDoorCb( const visualization_msgs::InteractiveMarkerFeedbackCo
 
 interactive_markers::MenuHandler DoorFoot::makeMenuHandler(){
   interactive_markers::MenuHandler mh;
-  mh.insert("Push Door", boost::bind( &DoorFoot::pushDoorCb, this, _1));
-  mh.insert("Pull Door", boost::bind( &DoorFoot::pullDoorCb, this, _1));
-  mh.insert("Show Initial Stand Location", boost::bind( &DoorFoot::showStandLocationCb, this, _1));
-  mh.insert("Show Next Step", boost::bind( &DoorFoot::showNextStepCb, this, _1));
-  mh.insert("Show Previous Step", boost::bind( &DoorFoot::showPreviousStepCb, this, _1));
+  mh.insert("Push Door", boost::bind( &DoorFoot::pushDoorCb, this, boost::placeholders::_1));
+  mh.insert("Pull Door", boost::bind( &DoorFoot::pullDoorCb, this, boost::placeholders::_1));
+  mh.insert("Show Initial Stand Location", boost::bind( &DoorFoot::showStandLocationCb, this, boost::placeholders::_1));
+  mh.insert("Show Next Step", boost::bind( &DoorFoot::showNextStepCb, this, boost::placeholders::_1));
+  mh.insert("Show Previous Step", boost::bind( &DoorFoot::showPreviousStepCb, this, boost::placeholders::_1));
   return mh;
 }
 
@@ -315,7 +315,7 @@ void DoorFoot::updateBoxInteractiveMarker(){
   visualization_msgs::InteractiveMarker boxIM = makeInteractiveMarker();
 
   server_->insert(boxIM,
-		  boost::bind( &DoorFoot::moveBoxCb, this, _1 ));
+		  boost::bind( &DoorFoot::moveBoxCb, this, boost::placeholders::_1 ));
   menu_handler.apply(*server_, marker_name);
   server_->applyChanges();
 }

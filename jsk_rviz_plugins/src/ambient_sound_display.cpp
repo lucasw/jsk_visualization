@@ -48,7 +48,7 @@ namespace jsk_rviz_plugins
                     "", 100, update_nh_ );
         tf_filter_->connectInput( sub_ );
         tf_filter_->registerCallback( boost::bind( &AmbientSoundDisplay::incomingMessage,
-                    this, _1 ));
+                    this, boost::placeholders::_1 ));
 
         // FrameManager has some built-in functions to set the status of a
         // Display based on callbacks from a tf::MessageFilter.  These work
@@ -319,7 +319,7 @@ namespace jsk_rviz_plugins
             property_manager_->createProperty<rviz::ROSTopicStringProperty>( "Topic",
                     property_prefix_,
                     boost::bind( &AmbientSoundDisplay::getTopic, this ),
-                    boost::bind( &AmbientSoundDisplay::setTopic, this, _1 ),
+                    boost::bind( &AmbientSoundDisplay::setTopic, this, boost::placeholders::_1 ),
                     parent_category_,
                     this );
         setPropertyHelpText( topic_property_, "jsk_hark_msgs::HarkPower topic to subscribe to." );
@@ -330,7 +330,7 @@ namespace jsk_rviz_plugins
             property_manager_->createProperty<rviz::ColorProperty>( "Color",
                     property_prefix_,
                     boost::bind( &AmbientSoundDisplay::getColor, this ),
-                    boost::bind( &AmbientSoundDisplay::setColor, this, _1 ),
+                    boost::bind( &AmbientSoundDisplay::setColor, this, boost::placeholders::_1 ),
                     parent_category_,
                     this );
         setPropertyHelpText( color_property_, "Color to draw the acceleration arrows." );
@@ -339,7 +339,7 @@ namespace jsk_rviz_plugins
             property_manager_->createProperty<rviz::FloatProperty>( "Alpha",
                     property_prefix_,
                     boost::bind( &AmbientSoundDisplay::getAlpha, this ),
-                    boost::bind( &AmbientSoundDisplay::setAlpha, this, _1 ),
+                    boost::bind( &AmbientSoundDisplay::setAlpha, this, boost::placeholders::_1 ),
                     parent_category_,
                     this );
         setPropertyHelpText( alpha_property_, "0 is fully transparent, 1.0 is fully opaque." );
@@ -348,7 +348,7 @@ namespace jsk_rviz_plugins
             property_manager_->createProperty<rviz::IntProperty>( "History Length",
                     property_prefix_,
                     boost::bind( &AmbientSoundDisplay::getHistoryLength, this ),
-                    boost::bind( &AmbientSoundDisplay::setHistoryLength, this, _1 ),
+                    boost::bind( &AmbientSoundDisplay::setHistoryLength, this, boost::placeholders::_1 ),
                     parent_category_,
                     this );
         setPropertyHelpText( history_length_property_, "Number of prior measurements to display." );
@@ -357,7 +357,7 @@ namespace jsk_rviz_plugins
             property_manager_->createProperty<rviz::FloatProperty>( "Width",
                     property_prefix_,
                     boost::bind( &AmbientSoundDisplay::getWidth, this ),
-                    boost::bind( &AmbientSoundDisplay::setWidth, this, _1 ),
+                    boost::bind( &AmbientSoundDisplay::setWidth, this, boost::placeholders::_1 ),
                     parent_category_,
                     this );
         setPropertyHelpText( width_property_, "Width of line" );
@@ -366,7 +366,7 @@ namespace jsk_rviz_plugins
             property_manager_->createProperty<rviz::FloatProperty>( "Scale",
                     property_prefix_,
                     boost::bind( &AmbientSoundDisplay::getScale, this ),
-                    boost::bind( &AmbientSoundDisplay::setScale, this, _1 ),
+                    boost::bind( &AmbientSoundDisplay::setScale, this, boost::placeholders::_1 ),
                     parent_category_,
                     this );
         setPropertyHelpText( scale_property_, "Scale of line" );
@@ -375,7 +375,7 @@ namespace jsk_rviz_plugins
             property_manager_->createProperty<rviz::FloatProperty>( "Grad",
                     property_prefix_,
                     boost::bind( &AmbientSoundDisplay::getGrad, this ),
-                    boost::bind( &AmbientSoundDisplay::setGrad, this, _1 ),
+                    boost::bind( &AmbientSoundDisplay::setGrad, this, boost::placeholders::_1 ),
                     parent_category_,
                     this );
         setPropertyHelpText( grad_property_, "Graduation" );
@@ -384,7 +384,7 @@ namespace jsk_rviz_plugins
             property_manager_->createProperty<rviz::FloatProperty>( "Bias",
                     property_prefix_,
                     boost::bind( &AmbientSoundDisplay::getBias, this ),
-                    boost::bind( &AmbientSoundDisplay::setBias, this, _1 ),
+                    boost::bind( &AmbientSoundDisplay::setBias, this, boost::placeholders::_1 ),
                     parent_category_,
                     this );
         setPropertyHelpText( bias_property_, "Bias to subtract" );

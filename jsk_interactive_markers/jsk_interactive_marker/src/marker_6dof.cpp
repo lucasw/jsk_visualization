@@ -96,15 +96,15 @@ public:
   
     circle_menu_entry_
       = menu_handler_.insert("Toggle 6DOF Circle",
-                             boost::bind(&Marker6DOF::menuFeedbackCB, this, _1));
+                             boost::bind(&Marker6DOF::menuFeedbackCB, this, boost::placeholders::_1));
     menu_handler_.setCheckState(circle_menu_entry_,
                                 interactive_markers::MenuHandler::CHECKED);
     server_.reset( new interactive_markers::InteractiveMarkerServer(ros::this_node::getName()));
     initializeInteractiveMarker();
     // Timer to update current pose on Rviz in the case which user re-enabled the plugin
-    timer_pose_ = nh.createTimer(ros::Duration(0.1), boost::bind(&Marker6DOF::timerPoseCallback, this, _1));
+    timer_pose_ = nh.createTimer(ros::Duration(0.1), boost::bind(&Marker6DOF::timerPoseCallback, this, boost::placeholders::_1));
     if (publish_tf_) {
-      timer_tf_ = nh.createTimer(ros::Duration(tf_duration), boost::bind(&Marker6DOF::timerTFCallback, this, _1));
+      timer_tf_ = nh.createTimer(ros::Duration(tf_duration), boost::bind(&Marker6DOF::timerTFCallback, this, boost::placeholders::_1));
     }
   }
   
@@ -259,7 +259,7 @@ protected:
     int_marker.scale = int_marker_scale_;
 
     server_->insert(int_marker,
-                    boost::bind(&Marker6DOF::processFeedbackCB, this, _1));
+                    boost::bind(&Marker6DOF::processFeedbackCB, this, boost::placeholders::_1));
     
     menu_handler_.apply(*server_, "marker");
     server_->applyChanges();

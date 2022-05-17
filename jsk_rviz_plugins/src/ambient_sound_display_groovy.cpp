@@ -66,7 +66,7 @@ namespace jsk_rviz_plugins
 //                    "", 100, update_nh_ );
 //        tf_filter_->connectInput( sub_ );
 //        tf_filter_->registerCallback( boost::bind( &AmbientSoundDisplay::incomingMessage,
-//                    this, _1 ));
+//                    this, boost::placeholders::_1 ));
 
         // FrameManager has some built-in functions to set the status of a
         // Display based on callbacks from a tf::MessageFilter.  These work
