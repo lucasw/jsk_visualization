@@ -218,10 +218,10 @@ void TabletViewController::updateTopics()
 {
 //  trajectory_subscriber_ = nh_.subscribe<view_controller_msgs::CameraPlacementTrajectory>
 //                              (camera_placement_trajectory_topic_property_->getStdString(), 1,
-//                              boost::bind(&TabletViewController::cameraPlacementTrajectoryCallback, this, _1));
+//                              boost::bind(&TabletViewController::cameraPlacementTrajectoryCallback, this, boost::placeholders::_1));
   placement_subscriber_  = nh_.subscribe<view_controller_msgs::CameraPlacement>
                               (camera_placement_topic_property_->getStdString(), 1,
-                              boost::bind(&TabletViewController::cameraPlacementCallback, this, _1));
+                              boost::bind(&TabletViewController::cameraPlacementCallback, this, boost::placeholders::_1));
 }
 
 void TabletViewController::onInitialize()

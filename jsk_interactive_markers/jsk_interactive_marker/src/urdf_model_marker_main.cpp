@@ -207,7 +207,7 @@ public:
     if (display_) {
       addUrdfMarker();
     }
-    display_marker_sub_ = pnh_.subscribe<geometry_msgs::PoseArray> (model_name_ + "/pose_array", 1, boost::bind( &UrdfModelSettings::displayMarkerArrayCB, this, _1));
+    display_marker_sub_ = pnh_.subscribe<geometry_msgs::PoseArray> (model_name_ + "/pose_array", 1, boost::bind( &UrdfModelSettings::displayMarkerArrayCB, this, boost::placeholders::_1));
   }
 };
 

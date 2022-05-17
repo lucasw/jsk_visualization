@@ -225,7 +225,7 @@ namespace jsk_interactive_marker {
     initializeInteractiveMarker();
     srv_ = std::make_shared <dynamic_reconfigure::Server<Config> > (pnh);
     dynamic_reconfigure::Server<Config>::CallbackType f =
-      boost::bind (&PointCloudCropper::configCallback, this, _1, _2);
+      boost::bind (&PointCloudCropper::configCallback, this, boost::placeholders::_1, boost::placeholders::_2);
     srv_->setCallback (f);
     point_sub_ = pnh.subscribe("input", 1, &PointCloudCropper::inputCallback, this);
   }
@@ -306,7 +306,7 @@ namespace jsk_interactive_marker {
     // menu
     menu_handler_.insert(
       "Crop",
-      boost::bind(&PointCloudCropper::menuFeedback, this, _1));
+      boost::bind(&PointCloudCropper::menuFeedback, this, boost::placeholders::_1));
     // submenu to change the cropper
     interactive_markers::MenuHandler::EntryHandle sub_cropper_menu_handle
       = menu_handler_.insert("Switch");
@@ -316,7 +316,7 @@ namespace jsk_interactive_marker {
       interactive_markers::MenuHandler::EntryHandle cropper_entry
         = menu_handler_.insert(
           sub_cropper_menu_handle, the_cropper->getName(),
-          boost::bind(&PointCloudCropper::changeCropperCallback, this, _1));
+          boost::bind(&PointCloudCropper::changeCropperCallback, this, boost::placeholders::_1));
       if (the_cropper != cropper_) {
         menu_handler_.setCheckState(
           cropper_entry,
@@ -386,7 +386,7 @@ namespace jsk_interactive_marker {
     im_helpers::add6DofControl(int_marker, false);
     
     server_->insert(int_marker,
-                    boost::bind(&PointCloudCropper::processFeedback, this, _1));    
+                    boost::bind(&PointCloudCropper::processFeedback, this, boost::placeholders::_1));
   }
 
   void PointCloudCropper::changeCropperCallback(

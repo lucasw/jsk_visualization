@@ -44,8 +44,8 @@ InteractivePointCloud::InteractivePointCloud(std::string marker_name,
   pub_handle_pose_array_ = pnh_.advertise<geometry_msgs::PoseArray>("handle_pose_array", 1);
   
   //subscribe
-  sub_handle_pose_ = pnh_.subscribe<geometry_msgs::PoseStamped> ("set_handle_pose", 1, boost::bind( &InteractivePointCloud::setHandlePoseCallback, this, _1));
-  sub_marker_pose_ = pnh_.subscribe<geometry_msgs::PoseStamped>("set_marker_pose", 1, boost::bind( &InteractivePointCloud::setMarkerPoseCallback, this, _1)); 
+  sub_handle_pose_ = pnh_.subscribe<geometry_msgs::PoseStamped> ("set_handle_pose", 1, boost::bind( &InteractivePointCloud::setHandlePoseCallback, this, boost::placeholders::_1));
+  sub_marker_pose_ = pnh_.subscribe<geometry_msgs::PoseStamped>("set_marker_pose", 1, boost::bind( &InteractivePointCloud::setMarkerPoseCallback, this, boost::placeholders::_1));
   sub_point_cloud_.subscribe(pnh_, input_pointcloud_, 1);
 
 
@@ -55,14 +55,14 @@ InteractivePointCloud::InteractivePointCloud(std::string marker_name,
     sub_bounding_box_.subscribe(pnh_,input_bounding_box_, 1);
     sub_initial_handle_pose_.subscribe(pnh_, initial_handle_pose_, 1);
     sync_->connectInput(sub_point_cloud_, sub_bounding_box_, sub_initial_handle_pose_);
-    sync_->registerCallback(boost::bind(&InteractivePointCloud::pointCloudAndBoundingBoxCallback, this, _1, _2, _3));
+    sync_->registerCallback(boost::bind(&InteractivePointCloud::pointCloudAndBoundingBoxCallback, this, boost::placeholders::_1, boost::placeholders::_2, boost::placeholders::_3));
 
   }else{
       sub_point_cloud_.registerCallback(&InteractivePointCloud::pointCloudCallback, this);
   }
   srv_ = std::make_shared <dynamic_reconfigure::Server<Config> > (pnh_);
   dynamic_reconfigure::Server<Config>::CallbackType f =
-    boost::bind (&InteractivePointCloud::configCallback, this, _1, _2);
+    boost::bind (&InteractivePointCloud::configCallback, this, boost::placeholders::_1, boost::placeholders::_2);
   srv_->setCallback (f);
 
   makeMenu();
@@ -145,9 +145,9 @@ void InteractivePointCloud::setMarkerPoseCallback( const geometry_msgs::PoseStam
 // create menu
 void InteractivePointCloud::makeMenu()
 {
-  menu_handler_.insert( "Move",  boost::bind( &InteractivePointCloud::move, this, _1) );
+  menu_handler_.insert( "Move",  boost::bind( &InteractivePointCloud::move, this, boost::placeholders::_1) );
 
-  menu_handler_.insert( "Hide",  boost::bind( &InteractivePointCloud::hide, this, _1));
+  menu_handler_.insert( "Hide",  boost::bind( &InteractivePointCloud::hide, this, boost::placeholders::_1));
 }
 
 //publish marker pose
@@ -389,10 +389,10 @@ void InteractivePointCloud::makeMarker(const sensor_msgs::PointCloud2ConstPtr cl
       if(display_interactive_manipulator_){
 	addVisible6DofControl(int_marker);
       }
-      marker_server_.insert( int_marker, boost::bind( &InteractivePointCloud::leftClickPoint, this, _1 ),
+      marker_server_.insert( int_marker, boost::bind( &InteractivePointCloud::leftClickPoint, this, boost::placeholders::_1 ),
 			     visualization_msgs::InteractiveMarkerFeedback::BUTTON_CLICK);
       marker_server_.setCallback( int_marker.name,
-				  boost::bind( &InteractivePointCloud::markerFeedback, this, _1) );
+				  boost::bind( &InteractivePointCloud::markerFeedback, this, boost::placeholders::_1) );
 
       menu_handler_.apply( marker_server_, marker_name_ );
       marker_server_.applyChanges();

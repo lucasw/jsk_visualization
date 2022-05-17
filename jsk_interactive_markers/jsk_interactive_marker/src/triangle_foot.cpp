@@ -118,7 +118,7 @@ void TriangleFoot::reverseTriangleCb( const visualization_msgs::InteractiveMarke
 
 interactive_markers::MenuHandler TriangleFoot::makeMenuHandler(){
   interactive_markers::MenuHandler mh;
-  mh.insert("Reverse Triangle", boost::bind( &TriangleFoot::reverseTriangleCb, this, _1));
+  mh.insert("Reverse Triangle", boost::bind( &TriangleFoot::reverseTriangleCb, this, boost::placeholders::_1));
   return mh;
 }
 
@@ -127,7 +127,7 @@ void TriangleFoot::updateBoxInteractiveMarker(){
   visualization_msgs::InteractiveMarker boxIM = makeInteractiveMarker();
 
   server_->insert(boxIM,
-		  boost::bind( &TriangleFoot::moveBoxCb, this, _1 ));
+		  boost::bind( &TriangleFoot::moveBoxCb, this, boost::placeholders::_1 ));
   menu_handler.apply(*server_, marker_name);
   server_->applyChanges();
 }

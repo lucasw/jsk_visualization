@@ -9,8 +9,8 @@ TransformableInteractiveServer::TransformableInteractiveServer():n_(new ros::Nod
   n_->param("torus_vdiv", torus_vdiv_, 20);
   n_->param("strict_tf", strict_tf_, false);
   tf_listener_.reset(new tf::TransformListener);
-  setpose_sub_ = n_->subscribe<geometry_msgs::PoseStamped>("set_pose", 1, boost::bind(&TransformableInteractiveServer::setPose, this, _1, false));
-  setcontrolpose_sub_ = n_->subscribe<geometry_msgs::PoseStamped>("set_control_pose", 1, boost::bind(&TransformableInteractiveServer::setPose, this, _1, true));
+  setpose_sub_ = n_->subscribe<geometry_msgs::PoseStamped>("set_pose", 1, boost::bind(&TransformableInteractiveServer::setPose, this, boost::placeholders::_1, false));
+  setcontrolpose_sub_ = n_->subscribe<geometry_msgs::PoseStamped>("set_control_pose", 1, boost::bind(&TransformableInteractiveServer::setPose, this, boost::placeholders::_1, true));
   setcolor_sub_ = n_->subscribe("set_color", 1, &TransformableInteractiveServer::setColor, this);
 
   set_r_sub_ = n_->subscribe("set_radius", 1, &TransformableInteractiveServer::setRadius, this);
@@ -32,10 +32,10 @@ TransformableInteractiveServer::TransformableInteractiveServer():n_(new ros::Nod
   pose_pub_ = n_->advertise<geometry_msgs::PoseStamped>("pose", 1);
   pose_with_name_pub_ = n_->advertise<jsk_interactive_marker::PoseStampedWithName>("pose_with_name", 1);
 
-  get_pose_srv_ = n_->advertiseService<jsk_interactive_marker::GetTransformableMarkerPose::Request, jsk_interactive_marker::GetTransformableMarkerPose::Response>("get_pose", boost::bind(&TransformableInteractiveServer::getPoseService, this, _1, _2, false));
-  get_control_pose_srv_ = n_->advertiseService<jsk_interactive_marker::GetTransformableMarkerPose::Request, jsk_interactive_marker::GetTransformableMarkerPose::Response>("get_control_pose", boost::bind(&TransformableInteractiveServer::getPoseService, this, _1, _2, true));
-  set_pose_srv_ = n_->advertiseService<jsk_interactive_marker::SetTransformableMarkerPose::Request ,jsk_interactive_marker::SetTransformableMarkerPose::Response>("set_pose", boost::bind(&TransformableInteractiveServer::setPoseService, this, _1, _2, false));
-  set_control_pose_srv_ = n_->advertiseService<jsk_interactive_marker::SetTransformableMarkerPose::Request ,jsk_interactive_marker::SetTransformableMarkerPose::Response>("set_control_pose", boost::bind(&TransformableInteractiveServer::setPoseService, this, _1, _2, true));
+  get_pose_srv_ = n_->advertiseService<jsk_interactive_marker::GetTransformableMarkerPose::Request, jsk_interactive_marker::GetTransformableMarkerPose::Response>("get_pose", boost::bind(&TransformableInteractiveServer::getPoseService, this, boost::placeholders::_1, boost::placeholders::_2, false));
+  get_control_pose_srv_ = n_->advertiseService<jsk_interactive_marker::GetTransformableMarkerPose::Request, jsk_interactive_marker::GetTransformableMarkerPose::Response>("get_control_pose", boost::bind(&TransformableInteractiveServer::getPoseService, this, boost::placeholders::_1, boost::placeholders::_2, true));
+  set_pose_srv_ = n_->advertiseService<jsk_interactive_marker::SetTransformableMarkerPose::Request ,jsk_interactive_marker::SetTransformableMarkerPose::Response>("set_pose", boost::bind(&TransformableInteractiveServer::setPoseService, this, boost::placeholders::_1, boost::placeholders::_2, false));
+  set_control_pose_srv_ = n_->advertiseService<jsk_interactive_marker::SetTransformableMarkerPose::Request ,jsk_interactive_marker::SetTransformableMarkerPose::Response>("set_control_pose", boost::bind(&TransformableInteractiveServer::setPoseService, this, boost::placeholders::_1, boost::placeholders::_2, true));
   get_color_srv_ = n_->advertiseService("get_color", &TransformableInteractiveServer::getColorService, this);
   set_color_srv_ = n_->advertiseService("set_color", &TransformableInteractiveServer::setColorService, this);
   get_focus_srv_ = n_->advertiseService("get_focus", &TransformableInteractiveServer::getFocusService, this);
@@ -51,7 +51,7 @@ TransformableInteractiveServer::TransformableInteractiveServer():n_(new ros::Nod
 
   config_srv_ = std::make_shared <dynamic_reconfigure::Server<InteractiveSettingConfig> > (*n_);
   dynamic_reconfigure::Server<InteractiveSettingConfig>::CallbackType f =
-    boost::bind (&TransformableInteractiveServer::configCallback, this, _1, _2);
+    boost::bind (&TransformableInteractiveServer::configCallback, this, boost::placeholders::_1, boost::placeholders::_2);
   config_srv_->setCallback (f);
 
   tf_timer = n_->createTimer(ros::Duration(0.05), &TransformableInteractiveServer::tfTimerCallback, this);
@@ -62,10 +62,10 @@ TransformableInteractiveServer::TransformableInteractiveServer():n_(new ros::Nod
   yaml_menu_handler_ptr_ = std::make_shared <YamlMenuHandler> (n_, yaml_filename);
   yaml_menu_handler_ptr_->_menu_handler.insert(
     "enable manipulator",
-    boost::bind(&TransformableInteractiveServer::enableInteractiveManipulatorDisplay, this, _1, /*enable=*/true));
+    boost::bind(&TransformableInteractiveServer::enableInteractiveManipulatorDisplay, this, boost::placeholders::_1, /*enable=*/true));
   yaml_menu_handler_ptr_->_menu_handler.insert(
     "disable manipulator",
-    boost::bind(&TransformableInteractiveServer::enableInteractiveManipulatorDisplay, this, _1, /*enable=*/false));
+    boost::bind(&TransformableInteractiveServer::enableInteractiveManipulatorDisplay, this, boost::placeholders::_1, /*enable=*/false));
 
   bool use_parent_and_child;
   n_->param("use_parent_and_child", use_parent_and_child, false);
@@ -194,7 +194,7 @@ void TransformableInteractiveServer::setZ(std_msgs::Float32 msg)
 void TransformableInteractiveServer::updateTransformableObject(TransformableObject* tobject)
 {
   visualization_msgs::InteractiveMarker int_marker = tobject->getInteractiveMarker();
-  server_->insert(int_marker, boost::bind( &TransformableInteractiveServer::processFeedback,this, _1));
+  server_->insert(int_marker, boost::bind( &TransformableInteractiveServer::processFeedback,this, boost::placeholders::_1));
   yaml_menu_handler_ptr_->applyMenu(server_, focus_object_marker_name_);
   server_->applyChanges();
 }
@@ -623,7 +623,7 @@ void TransformableInteractiveServer::insertNewObject( TransformableObject* tobje
   SetInitialInteractiveMarkerConfig(tobject);
   visualization_msgs::InteractiveMarker int_marker = tobject->getInteractiveMarker();
   transformable_objects_map_[name] = tobject;
-  server_->insert(int_marker, boost::bind( &TransformableInteractiveServer::processFeedback,this, _1));
+  server_->insert(int_marker, boost::bind( &TransformableInteractiveServer::processFeedback,this, boost::placeholders::_1));
   yaml_menu_handler_ptr_->applyMenu(server_, name);
   server_->applyChanges();
 

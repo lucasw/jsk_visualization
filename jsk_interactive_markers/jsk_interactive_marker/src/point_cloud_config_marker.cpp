@@ -99,47 +99,47 @@ visualization_msgs::InteractiveMarker PointCloudConfigMarker::makeBoxInteractive
 
 interactive_markers::MenuHandler PointCloudConfigMarker::makeMenuHandler(){
   interactive_markers::MenuHandler mh;
-  mh.insert("Add Point Cloud ROI", boost::bind( &PointCloudConfigMarker::publishMarkerMsg, this, _1));
+  mh.insert("Add Point Cloud ROI", boost::bind( &PointCloudConfigMarker::publishMarkerMsg, this, boost::placeholders::_1));
 
-  mh.insert("Start", boost::bind( &PointCloudConfigMarker::publishMarkerMsg, this, _1));
+  mh.insert("Start", boost::bind( &PointCloudConfigMarker::publishMarkerMsg, this, boost::placeholders::_1));
 
-  mh.insert("Stop", boost::bind( &PointCloudConfigMarker::publishMarkerMsg, this, _1));
+  mh.insert("Stop", boost::bind( &PointCloudConfigMarker::publishMarkerMsg, this, boost::placeholders::_1));
 
 
 
   resolution_menu_ = mh.insert( "Resolution" );
-  resolution_20cm_menu_ = mh.insert( resolution_menu_, "20cm", boost::bind( &PointCloudConfigMarker::changeResolutionCb, this, _1));
+  resolution_20cm_menu_ = mh.insert( resolution_menu_, "20cm", boost::bind( &PointCloudConfigMarker::changeResolutionCb, this, boost::placeholders::_1));
   mh.setCheckState( resolution_20cm_menu_, interactive_markers::MenuHandler::UNCHECKED );
 
 
-  resolution_10cm_menu_ = mh.insert( resolution_menu_, "10cm", boost::bind( &PointCloudConfigMarker::changeResolutionCb, this, _1));
+  resolution_10cm_menu_ = mh.insert( resolution_menu_, "10cm", boost::bind( &PointCloudConfigMarker::changeResolutionCb, this, boost::placeholders::_1));
   mh.setCheckState( resolution_10cm_menu_, interactive_markers::MenuHandler::UNCHECKED );
 
 
- resolution_5cm_menu_ = mh.insert( resolution_menu_, "5cm", boost::bind( &PointCloudConfigMarker::changeResolutionCb, this, _1));
+ resolution_5cm_menu_ = mh.insert( resolution_menu_, "5cm", boost::bind( &PointCloudConfigMarker::changeResolutionCb, this, boost::placeholders::_1));
   mh.setCheckState( resolution_5cm_menu_, interactive_markers::MenuHandler::CHECKED );
   marker_control_config.resolution_ = 0.05;
   checked_resolution_menu_ = resolution_5cm_menu_;
   //box size menu
   box_size_menu_ = mh.insert( "Box Size" );
   // 100x100x100
-  box_size_100_menu_ = mh.insert( box_size_menu_, "100 x 100 x 100", boost::bind( &PointCloudConfigMarker::changeBoxSizeCb, this, _1));
+  box_size_100_menu_ = mh.insert( box_size_menu_, "100 x 100 x 100", boost::bind( &PointCloudConfigMarker::changeBoxSizeCb, this, boost::placeholders::_1));
   mh.setCheckState( box_size_100_menu_, interactive_markers::MenuHandler::UNCHECKED );
   
   // 50x50x50
-  box_size_50_menu_ = mh.insert( box_size_menu_, "50 x 50 x 50", boost::bind( &PointCloudConfigMarker::changeBoxSizeCb, this, _1));
+  box_size_50_menu_ = mh.insert( box_size_menu_, "50 x 50 x 50", boost::bind( &PointCloudConfigMarker::changeBoxSizeCb, this, boost::placeholders::_1));
   mh.setCheckState( box_size_50_menu_, interactive_markers::MenuHandler::UNCHECKED );
 
   checked_box_size_menu_ = box_size_50_menu_;
 
   // 25x25x25
-  box_size_25_menu_ = mh.insert( box_size_menu_, "25 x 25 x 25", boost::bind( &PointCloudConfigMarker::changeBoxSizeCb, this, _1));
+  box_size_25_menu_ = mh.insert( box_size_menu_, "25 x 25 x 25", boost::bind( &PointCloudConfigMarker::changeBoxSizeCb, this, boost::placeholders::_1));
   mh.setCheckState( box_size_25_menu_, interactive_markers::MenuHandler::UNCHECKED );
 
-  mh.insert("Cancel", boost::bind( &PointCloudConfigMarker::cancelCb, this, _1));
-  mh.insert("Clear All Point Cloud", boost::bind( &PointCloudConfigMarker::clearCb, this, _1));
+  mh.insert("Cancel", boost::bind( &PointCloudConfigMarker::cancelCb, this, boost::placeholders::_1));
+  mh.insert("Clear All Point Cloud", boost::bind( &PointCloudConfigMarker::clearCb, this, boost::placeholders::_1));
   /*
-  resolution_1cm_menu_ = mh.insert( resolution_menu_, "10 cm", boost::bind( &PointCloudConfigMarker::changeResolutionCb, this, _1));
+  resolution_1cm_menu_ = mh.insert( resolution_menu_, "10 cm", boost::bind( &PointCloudConfigMarker::changeResolutionCb, this, boost::placeholders::_1));
   mh.setCheckState( resolution_10cm_menu_, interactive_markers::MenuHandler::CHECKED );
   */
   return mh;
@@ -279,7 +279,7 @@ void PointCloudConfigMarker::updateBoxInteractiveMarker(){
   visualization_msgs::InteractiveMarker boxIM = makeBoxInteractiveMarker(marker_control_config, marker_name);
   
   server_->insert(boxIM,
-      boost::bind( &PointCloudConfigMarker::moveBoxCb, this, _1 ));
+      boost::bind( &PointCloudConfigMarker::moveBoxCb, this, boost::placeholders::_1 ));
   menu_handler.apply(*server_, marker_name);
   server_->applyChanges();
 }
@@ -333,11 +333,11 @@ PointCloudConfigMarker::PointCloudConfigMarker () : nh_(), pnh_("~") {
   updateBoxInter_markers::MenuHandler::EntryHandle sub_menu_move_;
   sub_menu_move_ = model_menu_.insert( "Move" );
   model_menu_.insert( sub_menu_move_, "Yes", 
-          boost::bind( &PointCloudConfigMarker::jointMoveCB, this, _1) );
+          boost::bind( &PointCloudConfigMarker::jointMoveCB, this, boost::placeholders::_1) );
   //    model_menu_.insert( "Move" ,
-  //boost::bind( &PointCloudConfigMarker::jointMoveCB, this, _1) );
+  //boost::bind( &PointCloudConfigMarker::jointMoveCB, this, boost::placeholders::_1) );
   model_menu_.insert( "Reset Marker Pose",
-          boost::bind( &PointCloudConfigMarker::resetMarkerCB, this, _1) );
+          boost::bind( &PointCloudConfigMarker::resetMarkerCB, this, boost::placeholders::_1) );
   */
   
   return;

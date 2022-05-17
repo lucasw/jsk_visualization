@@ -63,7 +63,7 @@ plan_run_(false), lleg_first_(true) {
   ros::NodeHandle nh;
   srv_ = std::make_shared <dynamic_reconfigure::Server<Config> > (pnh);
   typename dynamic_reconfigure::Server<Config>::CallbackType f =
-    boost::bind (&FootstepMarker::configCallback, this, _1, _2);
+    boost::bind (&FootstepMarker::configCallback, this, boost::placeholders::_1, boost::placeholders::_2);
   srv_->setCallback (f);
   pnh.param("foot_size_x", foot_size_x_, 0.247);
   pnh.param("foot_size_y", foot_size_y_, 0.135);
@@ -110,31 +110,31 @@ plan_run_(false), lleg_first_(true) {
 
   server_.reset( new interactive_markers::InteractiveMarkerServer(ros::this_node::getName()));
   // menu_handler_.insert( "Snap Legs",
-  //                       boost::bind(&FootstepMarker::menuFeedbackCB, this, _1));
+  //                       boost::bind(&FootstepMarker::menuFeedbackCB, this, boost::placeholders::_1));
   // menu_handler_.insert( "Reset Legs",
-  //                       boost::bind(&FootstepMarker::menuFeedbackCB, this, _1));
+  //                       boost::bind(&FootstepMarker::menuFeedbackCB, this, boost::placeholders::_1));
   menu_handler_.insert( "Look Ground",
-                        boost::bind(&FootstepMarker::menuFeedbackCB, this, _1));
+                        boost::bind(&FootstepMarker::menuFeedbackCB, this, boost::placeholders::_1));
   menu_handler_.insert( "Execute the Plan",
-                        boost::bind(&FootstepMarker::menuFeedbackCB, this, _1));
+                        boost::bind(&FootstepMarker::menuFeedbackCB, this, boost::placeholders::_1));
   menu_handler_.insert( "Force to replan",
-                        boost::bind(&FootstepMarker::menuFeedbackCB, this, _1));
+                        boost::bind(&FootstepMarker::menuFeedbackCB, this, boost::placeholders::_1));
   // menu_handler_.insert( "Estimate occlusion",
-  //                       boost::bind(&FootstepMarker::menuFeedbackCB, this, _1));
+  //                       boost::bind(&FootstepMarker::menuFeedbackCB, this, boost::placeholders::_1));
   menu_handler_.insert( "Cancel Walk",
-                        boost::bind(&FootstepMarker::menuFeedbackCB, this, _1));
+                        boost::bind(&FootstepMarker::menuFeedbackCB, this, boost::placeholders::_1));
   menu_handler_.insert( "Toggle 6dof marker",
-                        boost::bind(&FootstepMarker::menuFeedbackCB, this, _1));
+                        boost::bind(&FootstepMarker::menuFeedbackCB, this, boost::placeholders::_1));
   // menu_handler_.insert( "Resume Footstep",
-  //                     boost::bind(&FootstepMarker::menuFeedbackCB, this, _1));
+  //                     boost::bind(&FootstepMarker::menuFeedbackCB, this, boost::placeholders::_1));
   menu_handler_.insert("Straight Heuristic",
-                       boost::bind(&FootstepMarker::menuFeedbackCB, this, _1));
+                       boost::bind(&FootstepMarker::menuFeedbackCB, this, boost::placeholders::_1));
   menu_handler_.insert("Stepcost Heuristic**",
-                       boost::bind(&FootstepMarker::menuFeedbackCB, this, _1));
+                       boost::bind(&FootstepMarker::menuFeedbackCB, this, boost::placeholders::_1));
   menu_handler_.insert("LLeg First",
-                       boost::bind(&FootstepMarker::menuFeedbackCB, this, _1));
+                       boost::bind(&FootstepMarker::menuFeedbackCB, this, boost::placeholders::_1));
   menu_handler_.insert("RLeg First",
-                       boost::bind(&FootstepMarker::menuFeedbackCB, this, _1));
+                       boost::bind(&FootstepMarker::menuFeedbackCB, this, boost::placeholders::_1));
   marker_pose_.header.frame_id = marker_frame_id_;
   marker_pose_.header.stamp = ros::Time::now();
   marker_pose_.pose.orientation.w = 1.0;
@@ -674,7 +674,7 @@ void FootstepMarker::planIfPossible() {
       initial_footstep.footsteps.push_back(initial_left);
     }
     goal.initial_footstep = initial_footstep;
-    ac_.sendGoal(goal, boost::bind(&FootstepMarker::planDoneCB, this, _1, _2));
+    ac_.sendGoal(goal, boost::bind(&FootstepMarker::planDoneCB, this, boost::placeholders::_1, boost::placeholders::_2));
   }
 }
 
@@ -791,7 +791,7 @@ void FootstepMarker::initializeInteractiveMarker() {
   }
   
   server_->insert(int_marker,
-                  boost::bind(&FootstepMarker::processFeedbackCB, this, _1));
+                  boost::bind(&FootstepMarker::processFeedbackCB, this, boost::placeholders::_1));
 
   // initial footsteps
   visualization_msgs::InteractiveMarker initial_lleg_int_marker;
@@ -808,7 +808,7 @@ void FootstepMarker::initializeInteractiveMarker() {
 
   initial_lleg_int_marker.controls.push_back( initial_left_box_control );
   server_->insert(initial_lleg_int_marker,
-                  boost::bind(&FootstepMarker::processFeedbackCB, this, _1));
+                  boost::bind(&FootstepMarker::processFeedbackCB, this, boost::placeholders::_1));
 
   visualization_msgs::InteractiveMarker initial_rleg_int_marker;
   initial_rleg_int_marker.header.frame_id = marker_frame_id_;
@@ -824,7 +824,7 @@ void FootstepMarker::initializeInteractiveMarker() {
 
   initial_rleg_int_marker.controls.push_back( initial_right_box_control );
   server_->insert(initial_rleg_int_marker,
-                  boost::bind(&FootstepMarker::processFeedbackCB, this, _1));
+                  boost::bind(&FootstepMarker::processFeedbackCB, this, boost::placeholders::_1));
   
   menu_handler_.apply( *server_, "footstep_marker");
   

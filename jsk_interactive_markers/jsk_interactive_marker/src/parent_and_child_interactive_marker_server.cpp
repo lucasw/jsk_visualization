@@ -30,8 +30,8 @@ namespace jsk_interactive_marker
         {
           // register subscriber
           parent_subscriber_nums_[req.parent_topic_name] = 1;
-          parent_update_subscribers_[req.parent_topic_name] = n_.subscribe<visualization_msgs::InteractiveMarkerUpdate>(req.parent_topic_name + "/update", 1, boost::bind(&ParentAndChildInteractiveMarkerServer::parentUpdateCb, this, _1, req.parent_topic_name));
-          parent_feedback_subscribers_[req.parent_topic_name] = n_.subscribe<visualization_msgs::InteractiveMarkerFeedback>(req.parent_topic_name + "/feedback", 1, boost::bind(&ParentAndChildInteractiveMarkerServer::parentFeedbackCb, this, _1, req.parent_topic_name));
+          parent_update_subscribers_[req.parent_topic_name] = n_.subscribe<visualization_msgs::InteractiveMarkerUpdate>(req.parent_topic_name + "/update", 1, boost::bind(&ParentAndChildInteractiveMarkerServer::parentUpdateCb, this, boost::placeholders::_1, req.parent_topic_name));
+          parent_feedback_subscribers_[req.parent_topic_name] = n_.subscribe<visualization_msgs::InteractiveMarkerFeedback>(req.parent_topic_name + "/feedback", 1, boost::bind(&ParentAndChildInteractiveMarkerServer::parentFeedbackCb, this, boost::placeholders::_1, req.parent_topic_name));
         }
         else
         {
@@ -250,8 +250,8 @@ namespace jsk_interactive_marker
   bool ParentAndChildInteractiveMarkerServer::setCallback(const std::string &name, FeedbackCallback feedback_cb, uint8_t feedback_type)
   {
     // synthesize cbs
-    callback_map_[name] = std::make_shared<FeedbackSynthesizer> (boost::bind(&ParentAndChildInteractiveMarkerServer::selfFeedbackCb, this, _1), feedback_cb);
-    return interactive_markers::InteractiveMarkerServer::setCallback(name, boost::bind(&FeedbackSynthesizer::call_func, *callback_map_[name], _1), feedback_type);
+    callback_map_[name] = std::make_shared<FeedbackSynthesizer> (boost::bind(&ParentAndChildInteractiveMarkerServer::selfFeedbackCb, this, boost::placeholders::_1), feedback_cb);
+    return interactive_markers::InteractiveMarkerServer::setCallback(name, boost::bind(&FeedbackSynthesizer::call_func, *callback_map_[name], boost::placeholders::_1), feedback_type);
   }
   void ParentAndChildInteractiveMarkerServer::insert(const visualization_msgs::InteractiveMarker &int_marker)
   {
