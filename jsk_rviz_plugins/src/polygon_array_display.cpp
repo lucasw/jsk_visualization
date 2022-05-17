@@ -35,6 +35,7 @@
 
 #define BOOST_PARAMETER_MAX_ARITY 7
 
+#include <OGRE/OgreTechnique.h>
 #include "polygon_array_display.h"
 #include "rviz/properties/parse_color.h"
 #include <rviz/validate_floats.h>

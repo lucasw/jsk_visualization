@@ -41,6 +41,8 @@
 #include <OGRE/OgreHardwarePixelBuffer.h>
 #include <OGRE/OgreTechnique.h>
 
+#include <QPainterPath>
+
 #include <rviz/uniform_string_stream.h>
 #include <rviz/display_context.h>
 #include <rviz/view_manager.h>
