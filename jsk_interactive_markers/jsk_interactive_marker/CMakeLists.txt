@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(jsk_interactive_marker)
 
-if("$ENV{ROS_DISTRO}" STRGREATER "melodic")
-  add_compile_options(-std=c++17)
-else()
-  add_compile_options(-std=c++11)
-endif()
+# if("$ENV{ROS_DISTRO}" STRGREATER "melodic")
+#   add_compile_options(-std=c++17)
+# else()
+#   add_compile_options(-std=c++11)
+# endif()
 
 # Use ccache if installed to make it fast to generate object files
 if (CMAKE_VERSION VERSION_LESS 3.4)

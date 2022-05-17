@@ -4,11 +4,12 @@
 # http://ros.org/doc/groovy/api/catkin/html/user_guide/supposed.html
 cmake_minimum_required(VERSION 2.8.3)
 project(jsk_rviz_plugins)
-if("$ENV{ROS_DISTRO}" STRGREATER "melodic")
-  add_compile_options(-std=c++17)
-else()
-  add_compile_options(-std=c++11)
-endif()
+# this logic doesn't work when ROS_DISTRO is unpopulated entirely (in ros-o/debian)
+# if("$ENV{ROS_DISTRO}" STRGREATER "melodic")
+#   add_compile_options(-std=c++17)
+# else()
+#   add_compile_options(-std=c++11)
+# endif()
 # Load catkin and all dependencies required for this package
 # TODO: remove all from COMPONENTS that are not catkin packages.
 find_package(catkin REQUIRED COMPONENTS rviz jsk_hark_msgs jsk_footstep_msgs jsk_recognition_utils
