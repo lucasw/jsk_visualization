@@ -24,6 +24,7 @@ endif()
 
 
 find_package(catkin REQUIRED COMPONENTS
+  diagnostic_updater
   message_generation
   cmake_modules jsk_footstep_msgs geometry_msgs visualization_msgs
   dynamic_reconfigure jsk_rviz_plugins
