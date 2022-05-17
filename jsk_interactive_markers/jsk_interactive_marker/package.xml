@@ -10,6 +10,7 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>mk</build_depend>
+  <build_depend>diagnostic_updater</build_depend>
   <build_depend>rosbuild</build_depend>
   <build_depend>roseus</build_depend>
   <build_depend>visualization_msgs</build_depend>
