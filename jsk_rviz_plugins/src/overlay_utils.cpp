@@ -34,6 +34,7 @@
  *********************************************************************/
 
 #include "overlay_utils.h"
+#include <OGRE/Overlay/OgreOverlay.h>
 #include <ros/ros.h>
 
 namespace jsk_rviz_plugins
