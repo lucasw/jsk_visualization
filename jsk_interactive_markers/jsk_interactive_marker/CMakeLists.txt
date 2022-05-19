@@ -144,7 +144,7 @@ add_executable(marker_6dof src/marker_6dof.cpp)
 target_link_libraries(marker_6dof ${catkin_LIBRARIES} ${orocos_kdl_LIBRARIES} ${Boost_LIBRARIES} jsk_interactive_marker)
 add_dependencies(marker_6dof ${PROJECT_NAME}_generate_messages_cpp ${PROJECT_NAME}_gencfg ${catkin_EXPORTED_TARGETS})
 
-add_executable(world2yaml src/world2yaml)
+add_executable(world2yaml src/world2yaml.cpp)
 target_link_libraries(world2yaml ${TinyXML_LIBRARIES} ${orocos_kdl_LIBRARIES}  ${Boost_LIBRARIES} jsk_interactive_marker)
 add_dependencies(world2yaml ${PROJECT_NAME}_generate_messages_cpp ${PROJECT_NAME}_gencfg ${catkin_EXPORTED_TARGETS})
 
