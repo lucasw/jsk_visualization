@@ -395,5 +395,5 @@ namespace jsk_interactive_marker
   }
 }  // namespace jsk_interactive_marker
 
-#include <pluginlib/class_list_macros.h>
+#include <pluginlib/class_list_macros.hpp>
 PLUGINLIB_EXPORT_CLASS(jsk_interactive_marker::TransformableMarkerOperatorAction, rviz::Panel )

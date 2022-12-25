@@ -43,7 +43,7 @@
 #include <OGRE/OgreHardwarePixelBuffer.h>
 #include <OGRE/OgreMaterialManager.h>
 #include <OGRE/OgreTexture.h>
-#include <pluginlib/class_list_macros.h>
+#include <pluginlib/class_list_macros.hpp>
 #include <QFontDatabase>
 #include <QPainter>
 #include <QStaticText>

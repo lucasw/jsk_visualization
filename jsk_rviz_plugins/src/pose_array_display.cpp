@@ -254,5 +254,5 @@ void PoseArrayDisplay::reset()
 
 } // namespace rviz
 
-#include <pluginlib/class_list_macros.h>
+#include <pluginlib/class_list_macros.hpp>
 PLUGINLIB_EXPORT_CLASS( jsk_rviz_plugins::PoseArrayDisplay, rviz::Display )

@@ -857,5 +857,5 @@ void TabletViewController::move_eye( float x, float y, float z )
 
 } // end namespace rviz
 
-#include <pluginlib/class_list_macros.h>
+#include <pluginlib/class_list_macros.hpp>
 PLUGINLIB_EXPORT_CLASS( jsk_rviz_plugins::TabletViewController, rviz::ViewController )

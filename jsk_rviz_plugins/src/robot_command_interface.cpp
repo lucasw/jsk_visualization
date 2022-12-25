@@ -161,5 +161,5 @@ namespace jsk_rviz_plugins
   }
 }
 
-#include <pluginlib/class_list_macros.h>
+#include <pluginlib/class_list_macros.hpp>
 PLUGINLIB_EXPORT_CLASS(jsk_rviz_plugins::RobotCommandInterfaceAction, rviz::Panel )
