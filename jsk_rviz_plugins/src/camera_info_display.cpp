@@ -41,6 +41,7 @@
 #include <OGRE/OgreBlendMode.h>
 #include <QImage>
 #include <OGRE/OgreHardwarePixelBuffer.h>
+#include <OGRE/OgreTechnique.h>
 #include <sensor_msgs/image_encodings.h>
 
 namespace enc = sensor_msgs::image_encodings;
